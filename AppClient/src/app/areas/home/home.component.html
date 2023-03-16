@@ -1,0 +1,33 @@
+<div class="home">
+  <div class="centerd-input-field">
+    <ng-container>
+      <label for="tags">Tags:</label>
+      <input id="tags" [(ngModel)]="tags" placeholder="Enter tags separated by commas" required pattern="[^\s]+">
+    </ng-container>
+
+    <ng-container>
+      <label for="sortBy">Sort by:</label>
+      <select id="sortBy" [(ngModel)]="sortBy">
+        <option value="id">ID</option>
+        <option value="reads">Reads</option>
+        <option value="likes">Likes</option>
+        <option value="popularity">Popularity</option>
+      </select>
+    </ng-container>
+
+    <ng-container>
+      <label for="direction">Direction:</label>
+      <select id="direction" [(ngModel)]="direction">
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select>
+    </ng-container>
+
+    <button (click)="showTable()" [disabled]="!isValidTag()">Show</button>
+  </div>
+
+  <div class="centered-table">
+    <app-view-posts-table [table_data]="posts"></app-view-posts-table>
+  </div>
+</div>
+

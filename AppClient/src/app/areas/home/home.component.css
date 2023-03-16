@@ -1,0 +1,18 @@
+.home {
+  margin: 50px;
+}
+
+.centerd-input-field {
+  width: 50%;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(8, auto);
+  grid-column-gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.centered-table {
+  width: 80%;
+  margin: 0 auto;
+}
