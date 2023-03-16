@@ -1,0 +1,18 @@
+# .NET Core files
+*.dll
+*.exe
+*.pdb
+*.user
+*.vs/
+bin/
+obj/
+
+# Visual Studio files
+.vscode/
+*.sln
+*.csproj.user
+
+# NuGet
+/nuget.config
+/packages/
+*.nupkg
