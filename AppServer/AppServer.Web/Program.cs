@@ -14,10 +14,29 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient();
 
+// Configure service lifetime
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IThirdPartyDataAccessApiService<Post>, PostsDataService>();
 
 builder.Services.AddLogging();
+
+// Add CORS Policy
+var corsOriginWhiteList = builder.Configuration.GetSection("CORS:AllowedOrigins")
+    .AsEnumerable()
+    .Select(x => x.Value)
+    .Where(x => x != null)
+    .ToArray();
+
+const string DEFAULT_CORS_POLICY_NAME = "default";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(DEFAULT_CORS_POLICY_NAME, policy =>
+    {
+        policy.WithOrigins(corsOriginWhiteList);
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +52,7 @@ app.UseMiddleware<ValidateGetPostsRequestMiddleware>();
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.UseRouting();
+app.UseCors(DEFAULT_CORS_POLICY_NAME);
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
