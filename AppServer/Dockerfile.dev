@@ -1,0 +1,28 @@
+# Stage 1: Build the application
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+WORKDIR /app
+
+# Copy and restore data repository project
+COPY ./AppServer.Data/*.csproj ./AppServer.Data/
+RUN dotnet restore ./AppServer.Data
+
+# Copy and restore service project
+COPY ./AppServer.Domain/*.csproj ./AppServer.Domain/
+RUN dotnet restore ./AppServer.Domain
+
+# Copy and restore service test project
+COPY ./AppServer.DomainTests/*.csproj ./AppServer.DomainTests/
+RUN dotnet restore ./AppServer.DomainTests
+
+# Copy and restore API project
+COPY ./AppServer.Web/*.csproj ./AppServer.Web/
+RUN dotnet restore ./AppServer.Web
+
+# Copy the entire solution and build the application
+COPY . ./
+RUN dotnet build -c Debug --no-restore
+
+# Stage 2: Run the application in development mode
+FROM build-env AS dev
+WORKDIR /app/API
+ENTRYPOINT ["dotnet", "run", "--urls", "http://0.0.0.0:5000"]
