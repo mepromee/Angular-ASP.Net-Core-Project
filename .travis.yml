@@ -1,0 +1,11 @@
+language: generic # this is to avoid the build failed error: rakefile not found
+sudo: required
+
+services:
+  - docker
+
+before_install:  # the last .client refers to look into the client directory for build context.
+  - docker build -t mepromee/dotnet-test -f ./AppServer/Dockerfile.dev ./AppServer
+
+script:
+  - docker run -e CI=true mepromee/dotnet-test dotnet test
